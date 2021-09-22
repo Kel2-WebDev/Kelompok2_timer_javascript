@@ -7,62 +7,9 @@
     <title>Timer</title>
   </head>
   <body>
-    <p id="main-timer">0</p>
+    <class-timer key="timer-kelas-1"><h3>Kelas 1</h3></class-timer>
+    <class-timer key="timer-kelas-2"><h3>Kelas 2</h3></class-timer>
 
-    <button id="pause-button" onclick="pause()" hidden>Paused</button>
-    <button id="start-button" onclick="start()">Start</button>
-    <button id="stop-button" onclick="stop()">Stop</button>
-
-    <script src="timer.js"></script>
+    <script src="./components/timer.js"></script>
   </body>
-
-  <script>
-    let state = "stopped";
-    let sec = 0;
-    let interval;
-
-    setTime(sec);
-
-    // TODO : Format seconds to HH:MM:SS
-    function setTime(sec) {
-      let curr_time = new Date(null).setSeconds(sec).toLocaleString();
-
-      document.getElementById("main-timer").innerText = curr_time;
-    }
-
-    function timerEvent() {
-      sec += 1;
-
-      setTime(sec);
-    }
-
-    function stop() {
-      clearInterval(interval);
-      sec = 0;
-      state = "stopped";
-
-      document.getElementById("pause-button").hidden = true;
-      document.getElementById("start-button").hidden = false;
-
-      setTime(sec);
-    }
-
-    function pause() {
-      clearInterval(interval);
-      state = "paused";
-
-      document.getElementById("pause-button").hidden = true;
-      document.getElementById("start-button").hidden = false;
-    }
-
-    function start() {
-      if (state != "started") {
-        interval = setInterval(timerEvent, 1000);
-        state = "started";
-
-        document.getElementById("pause-button").hidden = false;
-        document.getElementById("start-button").hidden = true;
-      }
-    }
-  </script>
 </html>
