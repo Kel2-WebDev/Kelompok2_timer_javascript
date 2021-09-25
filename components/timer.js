@@ -87,15 +87,20 @@ class Timer extends HTMLElement {
             this._hour = this._hour + 1
             this._min = 0
         }
-        sec = this._main_timer.innerHTML = this._hour + ':' + this._min + ':' + this._sec
+        
+        var formatted = this._hour.toString().padStart(2, '0') + ':' + 
+                        this._min.toString().padStart(2, '0') + ':' + 
+                        this._sec.toString().padStart(2, '0');
 
-        return sec
+        return formatted
     }
 
     start(force = false) {
         if (this._state !== "started" || force) {
             this._result.hidden = true
             this._sec = force || this._state === "paused" ? this._sec : 0
+            this._min = force || this._state === "paused" ? this._min : 0
+            this._hour = force || this._state === "paused" ? this._hour : 0
 
             this._interval = setInterval(() => {
                 this._sec += 1
