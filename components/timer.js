@@ -6,12 +6,12 @@ class Timer extends HTMLElement {
 
         this.shadowRoot.innerHTML = `
             <slot></slot>
-
+            
             <p id="main-timer">0</p>
             <button id="pause-button" hidden>Pause</button>
-            <button id="start-button">Start</button>
+            <button id="start-button" part="button">Start</button>
             <button id="stop-button">Stop</button>
-            <p id="result" hidden></p>
+            <p id="result" hidden></p>           
         `
 
         this._start_button = this.shadowRoot.getElementById("start-button")
