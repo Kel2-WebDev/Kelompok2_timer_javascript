@@ -7,7 +7,7 @@ class Timer extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <slot></slot>
 
-            <p id="main-timer">0</p>
+            <p id="main-timer">00:00:00</p>
             <button id="pause-button" hidden>Pause</button>
             <button id="start-button">Start</button>
             <button id="stop-button">Stop</button>
@@ -27,6 +27,8 @@ class Timer extends HTMLElement {
 
         this._state = "stopped"
         this._sec = 0
+        this._min = 0
+        this._hour = 0
         this._interval
 
         this._key = this.getAttribute("key")
@@ -76,6 +78,17 @@ class Timer extends HTMLElement {
 
     // TODO : Do time formatting
     _formatTime(sec) {
+
+        if(this._sec == 60){
+            this._min = this._min + 1
+            this._sec = 0
+        }
+        if(this._min == 60){
+            this._hour = this._hour + 1
+            this._min = 0
+        }
+        sec = this._main_timer.innerHTML = this._hour + ':' + this._min + ':' + this._sec
+
         return sec
     }
 
@@ -109,7 +122,7 @@ class Timer extends HTMLElement {
 
     stop(force = false) {
         if (this._state !== "stopped" || force) {
-            this._result.innerText = `Total waktu pengerjaan : ${this._sec} detik`
+            this._result.innerText = `Total waktu pengerjaan : ${this._hour} jam ${this._min} menit ${this._sec} detik`
             this._result.hidden = false
 
             clearInterval(this._interval)
