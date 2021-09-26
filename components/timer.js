@@ -7,20 +7,23 @@ class Timer extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <slot></slot>
 
-            <p id="main-timer">00:00:00</p>
-            <button id="pause-button" hidden>Pause</button>
-            <button id="start-button">Start</button>
-            <button id="stop-button">Stop</button>
-            <p id="result" hidden></p>
+            <p id="main-timer" part="time">0</p>
+            <button id="pause-button" hidden part="button">Pause</button>
+            <button id="start-button" part="button">Start</button>
+            <button id="stop-button" part="button">Stop</button>
+            <button id="reset-button" part="button">Reset</button>
+            <p id="result" hidden part="result"></p>         
         `
 
         this._start_button = this.shadowRoot.getElementById("start-button")
         this._stop_button = this.shadowRoot.getElementById("stop-button")
         this._pause_button = this.shadowRoot.getElementById("pause-button")
+        this._reset_button = this.shadowRoot.getElementById("reset-button")
 
         this._start_button.onclick = () => this.start()
         this._stop_button.onclick = () => this.stop()
         this._pause_button.onclick = () => this.pause()
+        this._reset_button.onclick = () => this.reset()
 
         this._main_timer = this.shadowRoot.getElementById("main-timer")
         this._result = this.shadowRoot.getElementById("result")
@@ -47,7 +50,7 @@ class Timer extends HTMLElement {
                 this._sec = value.sec
             }
 
-            if (typeof value.state === "string" && ["stopped", "started", "paused"].includes(value.state)) {
+            if (typeof value.state === "string" && ["stopped", "started", "paused", "reset"].includes(value.state)) {
                 switch (value.state) {
                     case "stopped":
                         this.stop(true)
@@ -60,6 +63,10 @@ class Timer extends HTMLElement {
                     case "paused":
                         this.pause(true)
                         this._main_timer.innerText = this._formatTime(this._sec)
+                        break
+                    
+                    case "reset":
+                        this.reset(true)
                         break
                 }
             }
@@ -78,7 +85,6 @@ class Timer extends HTMLElement {
 
     // TODO : Do time formatting
     _formatTime(sec) {
-
         if(this._sec == 60){
             this._min = this._min + 1
             this._sec = 0
@@ -87,7 +93,7 @@ class Timer extends HTMLElement {
             this._hour = this._hour + 1
             this._min = 0
         }
-        
+
         var formatted = this._hour.toString().padStart(2, '0') + ':' + 
                         this._min.toString().padStart(2, '0') + ':' + 
                         this._sec.toString().padStart(2, '0');
@@ -137,6 +143,19 @@ class Timer extends HTMLElement {
             this._start_button.hidden = false
 
             this._main_timer.innerText = this._formatTime(0)
+        }
+    }
+
+    reset(force = false){
+        if(this._state !== "reset" || force){
+            this._state = "reset"
+            this._result.hidden = true
+
+            this._main_timer.innerHTML = "00:00:00";
+            this._stop = true;
+            this._hour = 0;
+            this._sec = 0;
+            this._min = 0;
         }
     }
 }
