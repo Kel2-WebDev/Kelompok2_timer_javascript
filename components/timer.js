@@ -6,7 +6,7 @@ class Timer extends HTMLElement {
 
         this.shadowRoot.innerHTML = `
             <slot></slot>
-            
+
             <p id="main-timer" part="time">0</p>
             <button id="pause-button" hidden part="button">Pause</button>
             <button id="start-button" part="button">Start</button>
@@ -93,6 +93,7 @@ class Timer extends HTMLElement {
             this._hour = this._hour + 1
             this._min = 0
         }
+
         var formatted = this._hour.toString().padStart(2, '0') + ':' + 
                         this._min.toString().padStart(2, '0') + ':' + 
                         this._sec.toString().padStart(2, '0');
