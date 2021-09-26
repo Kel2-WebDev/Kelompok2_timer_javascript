@@ -42,19 +42,22 @@ class Timer extends HTMLElement {
         if (this._key) {
             const value = JSON.parse(window.localStorage.getItem(this._key))
 
-            if (!value || !("sec" in value) || !("state" in value)) return
+            if (!value || !("sec" in value) || !("state" in value) || !("last_on" in value)) return
 
             if ((typeof value.sec === "number" || typeof value.sec === "bigint") && value.sec >= 0) {
                 this._sec = value.sec
             }
 
-            if (typeof value.state === "string" && ["stopped", "started", "paused", "reset"].includes(value.state)) {
+            if (typeof value.state === "string" && ["stopped", "started", "paused", "reset"].includes(value.state) && typeof value.last_on === "number") {
                 switch (value.state) {
                     case "stopped":
                         this.stop(true)
                         break
 
                     case "started":
+                        if (Date.now() > value.last_on)
+                            this._sec += Math.floor((Date.now() - value.last_on) / 1000)
+
                         this.start(true)
                         break
 
@@ -75,7 +78,7 @@ class Timer extends HTMLElement {
         ev.preventDefault()
 
         if (this._key) {
-            window.localStorage.setItem(this._key, JSON.stringify({ sec: this._sec, state: this._state }))
+            window.localStorage.setItem(this._key, JSON.stringify({ sec: this._sec, state: this._state, last_on: Date.now() }))
         }
 
         return
