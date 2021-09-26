@@ -12,12 +12,16 @@
   <div class="container">
     <img src="components/banner.svg" width="500px">
 
-    <div class="time">
-      <class-timer key="timer-kelas-1"><h2>Class 1</h2></class-timer>
-      <class-timer key="timer-kelas-2"><h2>Class 2</h2></class-timer>
+    <div class="time" id="timers">
+	
+      <div class="adder">
+          <button id="add-button" onclick="addTimer()">Add</button>
+          <button id="remove-button" onclick="removeTimer()">Remove</button>
+      </div>
     </div>
   </div>
 
   <script src="./components/timer.js"></script>
+  <script src="./components/load.js"></script>
 </body>
 </html>

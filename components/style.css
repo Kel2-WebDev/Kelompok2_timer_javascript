@@ -41,3 +41,20 @@ class-timer::part(button):hover{
     margin: 20px 150px;
     text-transform: capitalize;
 }
+
+.adder {
+  margin-top: 20px;
+}
+
+.adder button {
+  width: 100px;
+  height: 40px;
+  background: transparent;
+  color: #384856;
+  border: 2px solid #384856;
+  border-radius: 5px;
+  outline: none;
+}
+.adder button:hover {
+  color: red;
+}
