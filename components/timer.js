@@ -173,7 +173,7 @@ function addTimer() {
 function removeTimer() {
 	var timers_num = parseInt(localStorage.getItem("timers_num"))
 	if (timers_num === 1) {
-		alert("Minimal satu timer!");
+		alert("At least one timer!");
 		return;
 	}
 	document.getElementById('timer-kelas-' + timers_num).remove();
