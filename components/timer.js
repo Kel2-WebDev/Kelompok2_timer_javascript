@@ -7,7 +7,7 @@ class Timer extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <slot></slot>
 
-            <p id="main-timer" part="time">0</p>
+            <p id="main-timer" part="time">00:00:00</p>
             <button id="pause-button" hidden part="button">Pause</button>
             <button id="start-button" part="button">Start</button>
             <button id="stop-button" part="button">Stop</button>
@@ -30,8 +30,6 @@ class Timer extends HTMLElement {
 
         this._state = "stopped"
         this._sec = 0
-        this._min = 0
-        this._hour = 0
         this._interval
 
         this._key = this.getAttribute("key")
@@ -64,7 +62,7 @@ class Timer extends HTMLElement {
                         this.pause(true)
                         this._main_timer.innerText = this._formatTime(this._sec)
                         break
-                    
+
                     case "reset":
                         this.reset(true)
                         break
@@ -83,20 +81,12 @@ class Timer extends HTMLElement {
         return
     }
 
-    // TODO : Do time formatting
     _formatTime(sec) {
-        if(this._sec == 60){
-            this._min = this._min + 1
-            this._sec = 0
-        }
-        if(this._min == 60){
-            this._hour = this._hour + 1
-            this._min = 0
-        }
+        const hour = Math.floor(sec / 3600)
+        const minutes = Math.floor((sec / 60) % 60)
+        const seconds = Math.floor(sec % 60)
 
-        var formatted = this._hour.toString().padStart(2, '0') + ':' + 
-                        this._min.toString().padStart(2, '0') + ':' + 
-                        this._sec.toString().padStart(2, '0');
+        const formatted = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
 
         return formatted
     }
@@ -133,7 +123,9 @@ class Timer extends HTMLElement {
 
     stop(force = false) {
         if (this._state !== "stopped" || force) {
-            this._result.innerText = `Total waktu pengerjaan : ${this._hour} jam ${this._min} menit ${this._sec} detik`
+            const formattedTime = this._formatTime(this._sec).split(':')
+
+            this._result.innerText = `Total waktu pengerjaan : ${formattedTime[0]} jam ${formattedTime[1]} menit ${formattedTime[2]} detik`
             this._result.hidden = false
 
             clearInterval(this._interval)
@@ -146,8 +138,8 @@ class Timer extends HTMLElement {
         }
     }
 
-    reset(force = false){
-        if(this._state !== "reset" || force){
+    reset(force = false) {
+        if (this._state !== "reset" || force) {
             this._state = "reset"
             this._result.hidden = true
 
