@@ -1,6 +1,6 @@
 class Timer extends HTMLElement {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
 
         this.attachShadow({ mode: "open" })
 
@@ -32,7 +32,7 @@ class Timer extends HTMLElement {
         this._sec = 0
         this._interval
 
-        this._key = this.getAttribute("key")
+        this._key = props.key
         this._loadLocalStorage()
 
         window.addEventListener("beforeunload", (ev) => this._onUnload(ev))
@@ -156,3 +156,27 @@ class Timer extends HTMLElement {
 }
 
 window.customElements.define("class-timer", Timer)
+
+function addTimer() {
+	var timers_num = parseInt(localStorage.getItem("timers_num")) + 1;
+	var node = new Timer({key: 'timer-kelas-' + timers_num});
+	node.setAttribute('id', 'timer-kelas-' + timers_num);
+	var headnode = document.createElement("h2");
+	headnode.setAttribute("id", "head-timer-kelas-" + timers_num);
+    var textnode = document.createTextNode("Timer " + timers_num);
+    headnode.appendChild(textnode);
+    document.getElementById("timers").appendChild(headnode); 
+	document.getElementById("timers").appendChild(node);
+	localStorage.setItem("timers_num", timers_num);
+}
+
+function removeTimer() {
+	var timers_num = parseInt(localStorage.getItem("timers_num"))
+	if (timers_num === 1) {
+		alert("At least one timer!");
+		return;
+	}
+	document.getElementById('timer-kelas-' + timers_num).remove();
+	document.getElementById('head-timer-kelas-' + timers_num).remove();
+	localStorage.setItem("timers_num", timers_num - 1)
+}

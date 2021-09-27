@@ -18,7 +18,8 @@ class-timer::part(result){
     color: #b76b6d;
 }
 
-class-timer::part(button){
+class-timer::part(button),
+.adder button {
     width: 100px;
     height: 40px;
     background: transparent;
@@ -28,7 +29,8 @@ class-timer::part(button){
     outline: none;
 }
 
-class-timer::part(button):hover{
+class-timer::part(button):hover,
+.adder button:hover{
     background: transparent;
     color: #b76b6d;
     font-weight: 800;
@@ -40,4 +42,8 @@ class-timer::part(button):hover{
     justify-content: space-between;
     margin: 20px 150px;
     text-transform: capitalize;
+}
+
+.adder {
+  margin-top: 20px;
 }
