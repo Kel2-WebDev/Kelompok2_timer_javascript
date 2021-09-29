@@ -178,5 +178,7 @@ function removeTimer() {
 	}
 	document.getElementById('timer-kelas-' + timers_num).remove();
 	document.getElementById('head-timer-kelas-' + timers_num).remove();
+    
+    localStorage.removeItem('timer-kelas-' + timers_num)
 	localStorage.setItem("timers_num", timers_num - 1)
 }
