@@ -158,7 +158,12 @@ class Timer extends HTMLElement {
 window.customElements.define("class-timer", Timer)
 
 function addTimer() {
-	var timers_num = parseInt(localStorage.getItem("timers_num")) + 1;
+	var old_timers_num = parseInt(localStorage.getItem("timers_num"))
+	if (old_timers_num >= 15){
+		alert("Maximal 15 timers!");
+		return;
+	}
+	var timers_num = old_timers_num + 1;
 	var node = new Timer({key: 'timer-kelas-' + timers_num});
 	node.setAttribute('id', 'timer-kelas-' + timers_num);
 	var headnode = document.createElement("h2");
@@ -178,5 +183,7 @@ function removeTimer() {
 	}
 	document.getElementById('timer-kelas-' + timers_num).remove();
 	document.getElementById('head-timer-kelas-' + timers_num).remove();
+    
+    localStorage.removeItem('timer-kelas-' + timers_num)
 	localStorage.setItem("timers_num", timers_num - 1)
 }
