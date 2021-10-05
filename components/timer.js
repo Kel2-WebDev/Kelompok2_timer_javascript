@@ -9,9 +9,11 @@ class Timer extends HTMLElement {
 
             <p id="main-timer" part="time">00:00:00</p>
             <button id="pause-button" hidden part="button">Pause</button>
+            <button id="resume-button" part="button">Resume</button>
             <button id="start-button" part="button">Start</button>
             <button id="stop-button" part="button">Stop</button>
             <button id="reset-button" part="button">Reset</button>
+            
             <p id="result" hidden part="result"></p>         
         `
 
@@ -19,11 +21,13 @@ class Timer extends HTMLElement {
         this._stop_button = this.shadowRoot.getElementById("stop-button")
         this._pause_button = this.shadowRoot.getElementById("pause-button")
         this._reset_button = this.shadowRoot.getElementById("reset-button")
+        this._resume_button = this.shadowRoot.getElementById("resume-button")        
 
         this._start_button.onclick = () => this.start()
         this._stop_button.onclick = () => this.stop()
         this._pause_button.onclick = () => this.pause()
         this._reset_button.onclick = () => this.reset()
+        this._resume_button.onclick = () => this.start()
 
         this._main_timer = this.shadowRoot.getElementById("main-timer")
         this._result = this.shadowRoot.getElementById("result")
@@ -39,6 +43,8 @@ class Timer extends HTMLElement {
     }
 
     _loadLocalStorage() {
+        this._resume_button.hidden = true
+
         if (this._key) {
             const value = JSON.parse(window.localStorage.getItem(this._key))
 
@@ -109,6 +115,7 @@ class Timer extends HTMLElement {
 
             this._state = "started"
 
+            this._resume_button.hidden = true
             this._pause_button.hidden = false
             this._start_button.hidden = true
         }
@@ -120,7 +127,7 @@ class Timer extends HTMLElement {
             this._state = "paused"
 
             this._pause_button.hidden = true
-            this._start_button.hidden = false
+            this._resume_button.hidden = false
         }
     }
 
@@ -134,6 +141,7 @@ class Timer extends HTMLElement {
             clearInterval(this._interval)
             this._state = "stopped"
 
+            this._resume_button.hidden = true
             this._pause_button.hidden = true
             this._start_button.hidden = false
 
